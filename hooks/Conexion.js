@@ -20,7 +20,6 @@ export async function enviar(recurso, data) {
   });
 
   const responseData = await response.json();
-  console.log(responseData); // Agrega este registro
 
   return responseData;
 }

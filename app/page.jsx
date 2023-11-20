@@ -29,7 +29,7 @@ export default function Home() {
       } else {
         //JOption 
         mensajes("Has ingresado al sistema!", "Bienvenido", "success");
-        router.push("/autos");
+        router.push("/marcas");
       }
 
     });
