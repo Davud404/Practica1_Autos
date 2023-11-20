@@ -21,3 +21,7 @@ export const estaSesion = () => {
     var token = sessionStorage.getItem('token');
     return (token && (token != 'undefined' || token != null || token != 'null'));
 }
+
+export const getId = () => {
+    return sessionStorage.getItem("id");
+}

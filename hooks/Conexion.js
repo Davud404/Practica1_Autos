@@ -23,3 +23,21 @@ export async function enviar(recurso, data) {
 
   return responseData;
 }
+
+export async function enviar_auto(recurso, data, token) {
+  const headers = {
+    "Accept": "application/json",
+    "Authorization": token ? `Bearer ${token}` : "",
+    "Content-Type": "application/json",
+  };
+
+  const response = await fetch(URL + recurso, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(data),
+  });
+
+  const responseData = await response.json();
+
+  return responseData;
+}

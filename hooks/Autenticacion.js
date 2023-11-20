@@ -1,5 +1,5 @@
-import { enviar } from "./Conexion";
-import { save, saveToken } from "./SessionUtil";
+import { enviar, enviar_auto } from "./Conexion";
+import { getToken, save, saveToken } from "./SessionUtil";
 
 export async function inicio_sesion(data) {
   const sesion = await enviar('index.php', data);
@@ -9,4 +9,9 @@ export async function inicio_sesion(data) {
     save('user', sesion.usuario);
   }
   return sesion;
+}
+
+export async function guardar_auto(data){
+  const response = await enviar_auto('index.php', data, getToken());
+  return response;
 }

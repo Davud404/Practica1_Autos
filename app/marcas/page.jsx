@@ -2,9 +2,9 @@ import Menu from "@/componentes/menu";
 import { obtener } from "@/hooks/Conexion"
 import Link from "next/link";
 
-export default async function Autos() {
+export default async function Marcas() {
     const respuesta = await obtener('index.php?funcion=marcas');
-    const autos = respuesta && respuesta.datos ? respuesta.datos : [];
+    const marcas = respuesta && respuesta.datos ? respuesta.datos : [];
     
     return (
         <div className="row">
@@ -22,7 +22,7 @@ export default async function Autos() {
                             </tr>
                         </thead>
                         <tbody>
-                            {Array.isArray(autos) && autos.map((dato, i) => (
+                            {Array.isArray(marcas) && marcas.map((dato, i) => (
                                 <tr key={i}>
                                     <td>{i + 1}</td>
                                     <td>{dato.nombre}</td>

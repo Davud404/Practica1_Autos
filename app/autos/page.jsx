@@ -1,5 +1,4 @@
 import Menu from "@/componentes/menu";
-import { obtener } from "@/hooks/Conexion"
 import Link from "next/link";
 
 export default async function Autos() {
@@ -9,8 +8,8 @@ export default async function Autos() {
     return (
         <div className="row">
             <Menu></Menu>
-            <div className="container-fluid">
-                <p>Aqui se muestran los carros</p>
+            <div className="container-fluid" style={{ margin: "1%" }}>
+                <Link href={"/autos/agregar_auto"} className="btn btn-success">Agregar</Link>
             </div>
         </div>
     )
