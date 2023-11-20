@@ -8,8 +8,11 @@ import { useRouter } from 'next/navigation';
 import { getId } from "@/hooks/SessionUtil";
 import { guardar_auto } from "@/hooks/Autenticacion";
 import mensajes from "@/componentes/Mensajes";
+import { obtener } from "@/hooks/Conexion";
+import { useEffect, useState } from "react";
 
 export default function Agregar_Auto() {
+    const usuario = getId();
     const router = useRouter();
     //validaciones
     const validationShema = Yup.object().shape({
@@ -21,8 +24,6 @@ export default function Agregar_Auto() {
         placa: Yup.string().required("Ingrese una placa"),
         chasis: Yup.string().required("Ingrese un chasis único"),
         foto: Yup.string().required("Ingrese la dirección de la imagen"),
-        user: Yup.string().required("Seleccione un usuario"),
-        marca: Yup.string().required("Seleccione una marca"),
     });
 
     const formOptions = { resolver: yupResolver(validationShema) };
@@ -30,7 +31,9 @@ export default function Agregar_Auto() {
     let { errors } = formState;
 
     const sendData = (data) => {
-        var data = {
+        console.log(data);
+        var dato = {  
+            "funcion": "guardarAuto",
             "descripcion": data.descripcion,
             "subtotal": data.subtotal,
             "iva": data.iva,
@@ -39,24 +42,35 @@ export default function Agregar_Auto() {
             "placa": data.placa,
             "chasis": data.chasis,
             "foto": data.foto,
-            "user": getId(),
+            "user": usuario,
             "marca": data.marca,
-            "funcion": "guardarAuto"
         };
-
+        console.log(dato);
         guardar_auto(dato).then((info) => {
             console.log(info);
             mensajes("Auto agregado correctamente", "OK", "success");
             router.push("/autos");
-        })
+        });
     };
+
+    const [marcas, setMarcas] = useState([]);
+
+    useEffect(() => {
+        const obtenerMarcas = async () => {
+            const respuesta = await obtener('index.php?funcion=marcas');
+            const marcas = respuesta && respuesta.datos ? respuesta.datos : [];
+            setMarcas(marcas);
+        };
+
+        obtenerMarcas();
+    }, []);
 
     return (
         <div className="row">
             <Menu></Menu>
             <div className="container-fluid" style={{ margin: "1%" }}>
                 <div style={{ maxWidth: '600px', margin: 'auto', border: '2px solid black', padding: '20px', borderRadius: '5px' }}>
-                    <form onSubmit={handleSubmit(sendData)} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <form onSubmit={handleSubmit(sendData)}>
                         <div>
                             <div className="form-outline form-white mb-4">
                                 <label className="form-label">Descripción</label>
@@ -140,14 +154,17 @@ export default function Agregar_Auto() {
 
                             <div className="form-outline form-white mb-4">
                                 <label className="form-label">Marca</label>
-                                <input
-                                    {...register('marca')} name="marca" id="marca"
-                                    className={`form-control ${errors.marca ? 'is-invalid' : ''}`} />
-                                <div className='alert alert-danger invalid-feedback'>
-                                    {errors.marca?.message}
+                                <div>
+                                    <select id="marca" {...register('marca')}>
+                                        {marcas.map((dato, index) => (
+                                            <option key={index} value={dato.external_id}>
+                                                {dato.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" >Agregar</button>
+                            <button type="submit" className="btn btn-primary">Agregar</button>
 
                         </div>
 

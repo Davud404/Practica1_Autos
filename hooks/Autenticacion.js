@@ -12,6 +12,7 @@ export async function inicio_sesion(data) {
 }
 
 export async function guardar_auto(data){
-  const response = await enviar_auto('index.php', data, getToken());
+  const token = getToken();
+  const response = await enviar_auto('index.php', data, token);
   return response;
 }

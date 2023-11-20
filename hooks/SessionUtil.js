@@ -10,7 +10,7 @@ export const saveToken = (key) => {
     sessionStorage.setItem("token",key);
 }
 export const getToken = () => {
-    return sessionStorage.getItem("token");
+    return sessionStorage.getItem('token');
 }
 
 export const borrarSesion = () => {
